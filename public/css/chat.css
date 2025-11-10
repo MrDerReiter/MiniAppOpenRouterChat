@@ -1,0 +1,161 @@
+/* Селекторы тегов */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    font-size: 20px;
+    background-color: #111;
+    color: #eee;
+    padding: 50px 15px 15px 15px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 80%;
+    gap: 10px;
+}
+
+button {
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background-color: #444;
+    color: #eee;
+    padding: 5px 10px 5px 10px;
+    font-size: 18px;
+    font-family: 'Franklin Gothic Medium';
+    transition: 0.5s ease;
+}
+
+button:hover:not(:disabled) {
+    background-color: #eee;
+    color: #111;
+}
+
+button:active:not(:disabled) {
+    background-color: cadetblue;
+    color: #eee;
+}
+
+button:disabled {
+    opacity: 0.5;
+    background-color: #111;
+    color: #eee;
+}
+
+a {
+    color: #eee;
+    text-decoration: none;
+}
+
+a:hover {
+    color: cadetblue;
+    cursor: pointer;
+}
+
+
+/* Селекторы классов */
+.prompt {
+    min-height: 150px;
+    padding: 5px;
+    font-size: 16px;
+    color: #eee;
+    background-color: #111;
+    border: 1px solid #eee;
+}
+
+.prompt:focus-visible {
+    outline-color: cadetblue;
+    box-shadow: 3px 3px 5px #666;
+}
+
+.prompt::selection {
+    background-color: #eee;
+    color: #111;
+}
+
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    margin: 50px 15px 15px 15px;
+    padding: 15px;
+}
+
+.messages-container>* {
+    max-width: 100%;
+    text-align: start;
+    font-size: 16px;
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+}
+
+.messages-container p::selection {
+    background-color: #eee;
+    color: #111;
+}
+
+.page-marker {
+    position: fixed;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    font-size: 30px;
+    color: #aaa;
+}
+
+.top-marker {
+    top: 100px;
+    right: 0;
+}
+
+.bottom-marker {
+    bottom: 50px;
+    right: 0;
+}
+
+.error-message {
+    color: red;
+}
+
+
+/* Селекторы ID */
+#spinner {
+    margin: 30px;
+    width: 50px;
+    height: 50px;
+}
+
+
+/* Адаптивные селекторы */
+@media (max-width: 480px) {
+
+    .messages-container * {
+        max-width: 20em;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .messages-container * {
+        max-width: 18em;
+    }
+}
+
+@media (max-width: 340px) {
+
+    .messages-container * {
+        max-width: 15em;
+    }
+}

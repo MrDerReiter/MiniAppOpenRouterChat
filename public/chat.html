@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <title>Open Router Chat</title>
+</head>
+
+<body>
+    <h2>Напишите ваш запрос к LLM:</h2>
+    <form>
+        <textarea class="prompt"></textarea>
+        <button type="button" id="submit-button">Отправить</button>
+        <button type="button" id="clear-button">Очистить контекст</button>
+    </form>
+    <div class="messages-container"></div>
+    <div id="spinner" class="spinner-border" role="status" hidden>
+        <span class="visually-hidden">Загрузка...</span>
+    </div>
+    <a id="bottom" href="index.html">←Назад к выбору модели</a>
+    <a class="page-marker top-marker" href="#top">↑</a>
+    <a class="page-marker bottom-marker" href="#bottom">↓</a>
+    <script src="script/chat.js" type="module"></script>
+</body>
+
+</html>
