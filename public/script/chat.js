@@ -17,23 +17,18 @@ async function handleQuery() {
         promptPanel.style.borderColor = "red";
         promptPanel.placeholder = "Вы не написали запрос!";
         promptPanel.onfocus = () => {
-            promptPanel.style.borderColor = "#eee";
+            promptPanel.style.borderColor = "";
             promptPanel.placeholder = "";
             promptPanel.onfocus = null;
         }
-
-        spinner.hidden = true;
-        submitButton.disabled = false;
-        clearButton.disabled = false;
     }
 
-    spinner.hidden = false;
-    submitButton.disabled = true;
-    clearButton.disabled = true;
-
+    toggleWaitingMode();
     const prompt = promptPanel.value;
+
     if (!prompt) {
         denyQuery();
+        toggleWaitingMode();
         return;
     }
 
@@ -52,11 +47,7 @@ async function handleQuery() {
         messagesContainer.append(userMessage, answerMessage);
     }
     catch (error) { handleError(error); }
-    finally {
-        spinner.hidden = true;
-        submitButton.disabled = false;
-        clearButton.disabled = false;
-    }
+    finally { toggleWaitingMode(); }
 }
 /**
  * @param {Object[]} context 
@@ -81,15 +72,19 @@ function loadContext(context) {
 }
 
 function clearContext() {
-    submitButton.disabled = true;
-    clearButton.disabled = true;
+    toggleWaitingMode();
 
     agent.clearContext();
     localStorage.setItem("context", "");
     messagesContainer.innerHTML = "";
 
-    submitButton.disabled = false;
-    clearButton.disabled = false;
+    toggleWaitingMode();
+}
+
+function toggleWaitingMode() {
+    spinner.hidden = !spinner.hidden;
+    submitButton.disabled = !submitButton.disabled;
+    clearButton.disabled = !clearButton.disabled;
 }
 
 
