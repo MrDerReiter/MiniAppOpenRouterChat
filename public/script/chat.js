@@ -4,11 +4,38 @@ import { token } from "./token.js";
 
 
 async function handleQuery() {
+    function handleError(error) {
+        const errorMessage = document.createElement("p");
+        errorMessage.innerHTML =
+            `Что-то пошло не так: <span class="error-message">${error.message}</span>.</br>` +
+            "Попробуйте отправить новый запрос, или выберите другую модель.";
+
+        messagesContainer.append(errorMessage);
+    }
+
+    function denyQuery() {
+        promptPanel.style.borderColor = "red";
+        promptPanel.placeholder = "Вы не написали запрос!";
+        promptPanel.onfocus = () => {
+            promptPanel.style.borderColor = "#eee";
+            promptPanel.placeholder = "";
+            promptPanel.onfocus = null;
+        }
+
+        spinner.hidden = true;
+        submitButton.disabled = false;
+        clearButton.disabled = false;
+    }
+
     spinner.hidden = false;
     submitButton.disabled = true;
     clearButton.disabled = true;
 
     const prompt = promptPanel.value;
+    if (!prompt) {
+        denyQuery();
+        return;
+    }
 
     try {
         const answer = await agent.chatCompletion(prompt);
@@ -32,31 +59,25 @@ async function handleQuery() {
     }
 }
 /**
- * @param {Error} error
+ * @param {Object[]} context 
  */
-function handleError(error) {
-    const errorMessage = document.createElement("p");
-    errorMessage.innerHTML =
-        `Что-то пошло не так: <span class="error-message">${error.message}</span>.</br>` +
-        "Попробуйте отправить новый запрос, или выберите другую модель.";
-
-    messagesContainer.append(errorMessage);
-}
-
-function loadContext() {
-    agent.context.forEach(message => {
+function loadContext(context) {
+    function appendMessage(message) {
         if (message.role == "user") {
-            let messageBlock = document.createElement("p");
+            const messageBlock = document.createElement("p");
             messageBlock.textContent = message.content;
             messagesContainer.append(messageBlock);
             return;
         }
 
-        let messageBlock = document.createElement("div");
+        const messageBlock = document.createElement("div");
         messageBlock.innerHTML = marked.parse(message.content);
         messageBlock.querySelectorAll("table").forEach(table => table.remove());
         messagesContainer.append(messageBlock);
-    });
+    }
+
+    agent.context = context;
+    agent.context.forEach(appendMessage);
 }
 
 function clearContext() {
@@ -83,10 +104,7 @@ const promptPanel = document.querySelector(".prompt");
 const messagesContainer = document.querySelector(".messages-container");
 
 agent.modelID = params.get("model");
-if (savedContext) {
-    agent.context = JSON.parse(savedContext);
-    loadContext();
-}
+if (savedContext) loadContext(JSON.parse(savedContext));
 
 submitButton.onclick = handleQuery;
 clearButton.onclick = clearContext;
