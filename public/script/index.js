@@ -3,7 +3,7 @@ import { token } from "./token.js";
 
 /**
  * @param {Object} model 
- * @returns {boolean}
+ * @returns {Boolean}
  */
 function isFree(model) {
     return model.pricing.prompt === "0" &&
