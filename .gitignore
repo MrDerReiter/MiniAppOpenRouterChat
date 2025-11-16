@@ -70,6 +70,7 @@ node_modules/
 
 
 404.html
+public/script/token.js
 
 .firebaserc
 firebase.json
