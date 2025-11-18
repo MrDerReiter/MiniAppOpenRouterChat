@@ -26,7 +26,7 @@ form {
 
 button {
     border: 1px solid #0d2472;
-    border-radius: 3px;
+    border-radius: 5px;
     background-color: #051650;
     color: #eee;
     padding: 5px 10px 5px 10px;
@@ -71,6 +71,7 @@ a:hover {
     color: #eee;
     background-color: #00072d;
     border: 1px solid #0d2472;
+    border-radius: 5px;
 }
 
 .prompt:focus-visible {
@@ -100,6 +101,10 @@ a:hover {
     padding: 15px;
     border: 1px solid #0d2472;
     border-radius: 10px;
+}
+
+.messages-container>p {
+    background: linear-gradient(135deg, #121959, #172179);
 }
 
 .messages-container p::selection {
