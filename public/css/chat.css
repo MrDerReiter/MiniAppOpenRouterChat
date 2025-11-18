@@ -36,8 +36,9 @@ button {
 }
 
 button:hover:not(:disabled) {
-    background-color: #eee;
-    color: #111;
+    background: linear-gradient(90deg, #121959, #172179, #384194);
+    border-color: #123499;
+    color: cadetblue;
 }
 
 button:active:not(:disabled) {
@@ -68,8 +69,8 @@ a:hover {
     padding: 5px;
     font-size: 16px;
     color: #eee;
-    background-color: #111;
-    border: 1px solid #eee;
+    background-color: #00072d;
+    border: 1px solid #0d2472;
 }
 
 .prompt:focus-visible {
