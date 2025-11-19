@@ -4,7 +4,14 @@ import { token } from "./token.js";
 
 
 async function handleQuery() {
-    function handleError(error) {
+    //#region Локальные функции
+    /**
+     * @param {Error} error 
+     * @param {string} lastPrompt
+     */
+    function handleError(error, lastPrompt) {
+        localStorage.setItem("lastPrompt", lastPrompt);
+
         const errorMessage = document.createElement("p");
         errorMessage.innerHTML =
             `Что-то пошло не так: <span class="error-message">${error.message}</span>.</br>` +
@@ -16,15 +23,17 @@ async function handleQuery() {
     function denyQuery() {
         promptPanel.style.borderColor = "red";
         promptPanel.placeholder = "Вы не написали запрос!";
+
         promptPanel.onfocus = () => {
             promptPanel.style.borderColor = "";
             promptPanel.placeholder = "";
             promptPanel.onfocus = null;
-        }
+        };
     }
+    //#endregion
 
     toggleWaitingMode();
-    const prompt = promptPanel.value;
+    const prompt = String(promptPanel.value);
 
     if (!prompt) {
         denyQuery();
@@ -34,7 +43,6 @@ async function handleQuery() {
 
     try {
         const answer = await agent.chatCompletion(prompt);
-        localStorage.setItem("context", JSON.stringify(agent.context));
 
         const userMessage = document.createElement("p");
         const answerMessage = document.createElement("div");
@@ -45,8 +53,13 @@ async function handleQuery() {
 
         promptPanel.value = "";
         messagesContainer.append(userMessage, answerMessage);
+
+        new Promise(resolve => {
+            localStorage.setItem("context", JSON.stringify(agent.context));
+            resolve();
+        });
     }
-    catch (error) { handleError(error); }
+    catch (error) { handleError(error, prompt); }
     finally { toggleWaitingMode(); }
 }
 /**
@@ -75,7 +88,8 @@ function clearContext() {
     toggleWaitingMode();
 
     agent.clearContext();
-    localStorage.setItem("context", "");
+    localStorage.clear();
+    promptPanel.value = "";
     messagesContainer.innerHTML = "";
 
     toggleWaitingMode();
@@ -90,6 +104,7 @@ function toggleWaitingMode() {
 
 const params = new URLSearchParams(location.search);
 const agent = new AIAgent(token, AIRouter.openRouter);
+const lastPrompt = localStorage.getItem("lastPrompt");
 const savedContext = localStorage.getItem("context");
 
 const spinner = document.getElementById("spinner");
@@ -99,6 +114,8 @@ const promptPanel = document.querySelector(".prompt");
 const messagesContainer = document.querySelector(".messages-container");
 
 agent.modelID = params.get("model");
+
+if (lastPrompt) promptPanel.value = lastPrompt;
 if (savedContext) loadContext(JSON.parse(savedContext));
 
 submitButton.onclick = handleQuery;
