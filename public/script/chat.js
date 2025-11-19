@@ -55,6 +55,7 @@ async function handleQuery() {
         messagesContainer.append(userMessage, answerMessage);
 
         new Promise(resolve => {
+            localStorage.removeItem("lastPrompt");
             localStorage.setItem("context", JSON.stringify(agent.context));
             resolve();
         });
