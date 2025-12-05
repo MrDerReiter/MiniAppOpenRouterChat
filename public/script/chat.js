@@ -11,13 +11,20 @@ async function handleQuery() {
      */
     function handleError(error, lastPrompt) {
         localStorage.setItem("lastPrompt", lastPrompt);
+        clearPreviousErrors();
 
         const errorMessage = document.createElement("p");
+        errorMessage.classList.add("error-response");
         errorMessage.innerHTML =
             `Что-то пошло не так: <span class="error-message">${error.message}</span>.</br>` +
             "Попробуйте отправить новый запрос, или выберите другую модель.";
 
         messagesContainer.append(errorMessage);
+    }
+
+    function clearPreviousErrors() {
+        messagesContainer.querySelectorAll(".error-response")
+            .forEach(errorMessage => errorMessage.remove());
     }
 
     function denyQuery() {
@@ -51,6 +58,7 @@ async function handleQuery() {
         answerMessage.innerHTML = marked.parse(answer);
         answerMessage.querySelectorAll("table").forEach(table => table.remove());
 
+        clearPreviousErrors();
         promptPanel.value = "";
         messagesContainer.append(userMessage, answerMessage);
 

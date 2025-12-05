@@ -48,16 +48,15 @@ export class AIAgent {
             headers: { Authorization: `Bearer ${this.#token}` }
         }
 
-        try {
-            const models = await fetch(this.router.modelsListUrl, httpRequest)
-                .then(response => {
-                    if (response.ok) return response.json()
-                    else throw new Error(`запрос отклонён с кодом ${response.status}`);
-                }).then(body => body.data);
-
-            if (predicate) return models.filter(predicate);
-            else return models;
-        } catch (error) { throw error }
+        return fetch(this.router.modelsListUrl, httpRequest)
+            .then(response => {
+                if (response.ok) return response.json()
+                else throw new Error(`запрос отклонён с кодом ${response.status}`);
+            }).then(body => {
+                const models = body.data;
+                if (predicate) return models.filter(predicate);
+                else return models;
+            }).catch(error => Promise.reject(error));
     }
 
     /**
@@ -68,7 +67,7 @@ export class AIAgent {
      * Каждый такой запрос модель будет интерпретировать как новый диалог.
      */
     async singleCompletion(prompt) {
-        if (!this.modelID) throw new Error("ModelID is not defined.");
+        if (!this.modelID) throw new Error("ModelID не определён.");
 
         const httpRequest = {
             method: "POST",
@@ -79,15 +78,13 @@ export class AIAgent {
             body: JSON.stringify({ model: this.modelID, prompt: prompt })
         }
 
-        try {
-            const answer = await fetch(this.router.singleCompletionUrl, httpRequest)
-                .then(response => {
-                    if (response.ok) return response.json();
-                    else throw new Error(`Запрос отклонён с кодом ${response.status}.`);
-                }).then(body => body.choices[0].text);
-
-            return answer;
-        } catch (error) { throw error }
+        return fetch(this.router.singleCompletionUrl, httpRequest)
+            .then(response => {
+                if (response.ok) return response.json();
+                else throw new Error(`Запрос отклонён с кодом ${response.status}.`)
+            })
+            .then(body => body.choices[0].text)
+            .catch(error => Promise.reject(error));
     }
 
     /**
@@ -99,9 +96,7 @@ export class AIAgent {
      * @returns {Promise<string>} Промис, результатом которого будет строка с ответом от LLM.
      */
     async chatCompletion(prompt) {
-        if (!this.modelID) throw new Error("ModelID is not defined.");
-
-        this.context.push({ role: "user", content: prompt });
+        if (!this.modelID) throw new Error("ModelID не определён.");
 
         const httpRequest = {
             method: "POST",
@@ -112,16 +107,20 @@ export class AIAgent {
             body: JSON.stringify({ messages: this.context, model: this.modelID })
         }
 
-        try {
-            const answer = await fetch(this.router.chatCompletionUrl, httpRequest)
-                .then(response => {
-                    if (response.ok) return response.json();
-                    else throw new Error(`запрос отклонён с кодом ${response.status}`);
-                }).then(body => body.choices[0].message.content);
+        this.context.push({ role: "user", content: prompt });
 
-            this.context.push({ role: "assistant", content: answer });
-            return answer;
-        } catch (error) { throw error }
+        return fetch(this.router.chatCompletionUrl, httpRequest)
+            .then(response => {
+                if (response.ok) return response.json();
+                else throw new Error(`запрос отклонён с кодом ${response.status}`);
+            }).then(body => {
+                const answer = body.choices[0].message.content;
+                this.context.push({ role: "assistant", content: answer });
+                return answer;
+            }).catch(error => {
+                this.context.pop();
+                return Promise.reject(error);
+            });
     }
 
     /**
