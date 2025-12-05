@@ -98,6 +98,8 @@ export class AIAgent {
     async chatCompletion(prompt) {
         if (!this.modelID) throw new Error("ModelID не определён.");
 
+        this.context.push({ role: "user", content: prompt });
+
         const httpRequest = {
             method: "POST",
             headers: {
@@ -106,8 +108,6 @@ export class AIAgent {
             },
             body: JSON.stringify({ messages: this.context, model: this.modelID })
         }
-
-        this.context.push({ role: "user", content: prompt });
 
         return fetch(this.router.chatCompletionUrl, httpRequest)
             .then(response => {
