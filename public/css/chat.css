@@ -35,83 +35,35 @@ button {
     transition: 0.5s ease;
 }
 
-button:hover:not(:disabled) {
-    background: linear-gradient(90deg, #121959, #172179, #384194);
-    border-color: #123499;
-    color: cadetblue;
-}
+    button:hover:not(:disabled) {
+        background: linear-gradient(90deg, #121959, #172179, #384194);
+        border-color: #123499;
+        color: cadetblue;
+    }
 
-button:active:not(:disabled) {
-    background-color: cadetblue;
-    color: #eee;
-}
+    button:active:not(:disabled) {
+        background-color: cadetblue;
+        color: #eee;
+    }
 
-button:disabled {
-    opacity: 0.5;
-    background-color: #111;
-    color: #eee;
-}
+    button:disabled {
+        opacity: 0.5;
+        background-color: #111;
+        color: #eee;
+    }
 
 a {
     color: #eee;
     text-decoration: none;
 }
 
-a:hover {
-    color: cadetblue;
-    cursor: pointer;
-}
+    a:hover {
+        color: cadetblue;
+        cursor: pointer;
+    }
 
 
 /* Селекторы классов */
-.prompt {
-    min-height: 150px;
-    padding: 5px;
-    font-size: 16px;
-    color: #eee;
-    background-color: #00072d;
-    border: 1px solid #0d2472;
-    border-radius: 5px;
-}
-
-.prompt:focus-visible {
-    outline-color: #0d2472;
-    box-shadow: 3px 3px 5px #123499;
-}
-
-.prompt::selection {
-    background-color: #eee;
-    color: #111;
-}
-
-.messages-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-    margin: 50px 15px 15px 15px;
-    padding: 15px;
-}
-
-.messages-container>* {
-    max-width: 100%;
-    text-align: start;
-    font-size: 16px;
-    margin: 10px;
-    padding: 15px;
-    border: 1px solid #0d2472;
-    border-radius: 10px;
-}
-
-.messages-container>p {
-    background: linear-gradient(135deg, #121959, #172179);
-}
-
-.messages-container p::selection {
-    background-color: #eee;
-    color: #111;
-}
-
 .page-marker {
     position: fixed;
     width: 45px;
@@ -143,25 +95,73 @@ a:hover {
     height: 50px;
 }
 
+#messages-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    margin: 50px 15px 15px 15px;
+    padding: 15px;
+}
+
+    #messages-container > * {
+        max-width: 100%;
+        text-align: start;
+        font-size: 16px;
+        margin: 10px;
+        padding: 15px;
+        border: 1px solid #0d2472;
+        border-radius: 10px;
+    }
+
+    #messages-container > p {
+        background: linear-gradient(135deg, #121959, #172179);
+    }
+
+    #messages-container p::selection {
+        background-color: #eee;
+        color: #111;
+    }
+
+#prompt {
+    min-height: 150px;
+    padding: 5px;
+    font-size: 16px;
+    color: #eee;
+    background-color: #00072d;
+    border: 1px solid #0d2472;
+    border-radius: 5px;
+}
+
+    #prompt:focus-visible {
+        outline-color: #0d2472;
+        box-shadow: 3px 3px 5px #123499;
+    }
+
+    #prompt::selection {
+        background-color: #eee;
+        color: #111;
+    }
+
 
 /* Адаптивные селекторы */
 @media (max-width: 480px) {
 
-    .messages-container * {
+    #messages-container * {
         max-width: 20em;
     }
 }
 
 @media (max-width: 360px) {
 
-    .messages-container * {
+    #messages-container * {
         max-width: 18em;
     }
 }
 
 @media (max-width: 340px) {
 
-    .messages-container * {
+    #messages-container * {
         max-width: 15em;
     }
 }
