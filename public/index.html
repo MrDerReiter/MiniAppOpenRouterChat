@@ -4,29 +4,29 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport"
-		  content="width=device-width, initial-scale=1.0">
+				content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet"
-		  href="css/bootstrap.min.css">
+				href="style/bootstrap.min.css">
 	<link rel="stylesheet"
-		  href="css/index.css">
+				href="style/index.css">
 	<title>Open Router Chat</title>
 </head>
 
 <body>
 	<h1>Выберите LLM из списка:</h1>
 	<ul id="modelSelector"
-		hidden></ul>
+			hidden></ul>
 	<div id="spinner"
-		 class="spinner-border"
-		 role="status">
+			 class="spinner-border"
+			 role="status">
 		<span class="visually-hidden">Загрузка...</span>
 	</div>
 	<template id="error-message-template">
-		Что-то пошло не так: <span class="error-message">ErrorText</span>.<br/>
+		Что-то пошло не так:<span class="error-message">ErrorText</span>.<br />
 		Проверьте соединение с интернетом и/или попробуйте обновить страницу.
 	</template>
-	<script src="script/UI/modelSelector.js"
-			type="module"></script>
+	<script src="src/UI/modelSelector.js"
+					type="module"></script>
 </body>
 
 </html>

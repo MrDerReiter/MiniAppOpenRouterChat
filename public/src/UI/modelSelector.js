@@ -1,6 +1,6 @@
-import { token } from "./../token.js"
-import { AIAgent, AIRouter } from "./../components/aiAgent.js";
-import { isFreeModel, createErrorMessage } from "./../components/helpers.js"
+import { token } from "./../token.js";
+import { AIAgent, AIRouter } from "./../components/openRouterAIAgent/index.js";
+import { isFreeModel, createErrorMessage } from "./../components/helpers.js";
 
 
 async function renderModelList() {

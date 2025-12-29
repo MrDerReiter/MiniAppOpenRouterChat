@@ -6,28 +6,14 @@
  * от HTTP-запросов и JSON-обьектов с неочевидной структурой.
  */
 export class AIAgent {
-	/**
-	 * @protected
-	 * @type {String}
-	 * */
-	_token;
-	/**
-	 * @protected
-	 * @type {Object[]}
-	 */
-	_context = [];
-
-	/**
-	 * Объект с настройками подключения к провайдеру LLM.
-	 * @protected
-	 * @type {AIRouter}
-	*/
-	_router;
+	/** @private @type {String} */ _token;
+	/** @private @type {AIRouter} */ _router;
+	/** @private @type {Array} */ _context = [];
 
 	/**
 	 * Сохранённые сообщения пользователя и LLM, в виде массива (только для чтения).
 	 * @readonly
-	 * @type {Object[]}
+	 * @type {Array}
 	 */
 	get context() { return this._context }
 
@@ -39,6 +25,7 @@ export class AIAgent {
 	get modelID() { return this._router?.currentModelID; }
 	set modelID(value) { this._router.currentModelID = value; }
 
+
 	/**
 	 * @param {String} token Токен для идентификации запросов к провайдеру LLM.
 	 * @param {AIRouter} router Объект с настройками маршрутизации запросов.
@@ -48,11 +35,12 @@ export class AIAgent {
 		this._router = router;
 	}
 
+
 	/**
 	 * Асинхронно запрашивает с сервера список доступных на данный момент моделей.
 	 * @param {(model: Object) => Boolean} predicate
 	 * (Опционально) Функция-предикат, для создания выборки.
-	 * @returns {Promise<Object[]>}
+	 * @returns {Promise<Array>}
 	 * Промис, результатом которого будет массив с объектами,
 	 * каждый из которых хранит информацию о конкретной модели, к которой можно сделать запрос.
 	 * Если был передан предикат в качестве параметра, массив будет заранее отфильтрован.
@@ -73,7 +61,6 @@ export class AIAgent {
 				else return models;
 			}).catch(error => Promise.reject(error));
 	}
-
 	/**
 	 * Асинхронно отправляет одиночный(!) запрос к ранее выбранной LLM.
 	 * @param {String} prompt Текст запроса к LLM.
@@ -101,7 +88,6 @@ export class AIAgent {
 			.then(body => body.choices[0].text)
 			.catch(error => Promise.reject(error));
 	}
-
 	/**
 	 * Асинхронно запрашивает ответ в чате от AI. Отправляет модели контекст, чтобы она могла учитывать
 	 * при ответе ранее отправленные и полученные сообщения (если только контекст
@@ -113,7 +99,7 @@ export class AIAgent {
 	async chatCompletion(prompt) {
 		if (!this.modelID) throw new Error("ModelID не определён.");
 
-		this.context.push({ role: "user", content: prompt });
+		this._context.push({ role: "user", content: prompt });
 
 		const httpRequest = {
 			method: "POST",
@@ -133,47 +119,18 @@ export class AIAgent {
 				this.context.push({ role: "assistant", content: answer });
 				return answer;
 			}).catch(error => {
-				this.context.pop();
+				this._context.pop();
 				return Promise.reject(error);
 			});
 	}
-
 	/**
 	 * Загружает новый контекст; можно использовать, например, для возобновления предыдущей сессии.
-	 * @param {Object[]} context
+	 * @param {Array} context
 	 */
 	loadContext(context) { this._context = context }
-
 	/**
 	 * Очищает контекст, так что все последующие сообщения будут
 	 * интерпретироваться LLM как новый диалог.
 	 */
 	clearContext() { this._context = []; }
-}
-
-/**
- * Обьект, инкапсулирующий реквизиты для взаимодействия с сервером провайдера AI.
- * Требуется AI-агенту для корректной работы. Данный обьект не нужно создавать с
- * помощью конструктора; вместо этого используйте статические свойства класса
- * (только для чтения), которые возвращают подходящий объект для определённого сервиса.
- */
-export class AIRouter {
-	/** @type {String} */
-	currentModelID;
-	/** @type {String} */
-	singleCompletionUrl;
-	/** @type {String} */
-	chatCompletionUrl;
-	/** @type {String} */
-	modelsListUrl;
-
-	/** Роутер для сервиса www.openrouter.ai */
-	static get openRouter() {
-		const router = new AIRouter();
-		router.singleCompletionUrl = "https://openrouter.ai/api/v1/completions";
-		router.chatCompletionUrl = "https://openrouter.ai/api/v1/chat/completions";
-		router.modelsListUrl = "https://openrouter.ai/api/v1/models";
-
-		return router;
-	}
 }

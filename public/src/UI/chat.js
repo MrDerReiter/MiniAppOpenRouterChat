@@ -1,11 +1,11 @@
 import { token } from "./../token.js";
 import { ChatPageVM } from "./chatPageVM.js";
-import { AIAgent, AIRouter } from "./../components/aiAgent.js";
+import { AIAgent, AIRouter } from "./../components/openRouterAIAgent/index.js";
 
 
 async function handleQuery() {
 	page.toggleWaitingMode();
-	const prompt = String(page.promptPanel.value);
+	const prompt = page.promptPanel.value;
 
 	if (!prompt) {
 		page.renderQueryDenied();

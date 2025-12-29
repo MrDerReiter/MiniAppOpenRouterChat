@@ -70,7 +70,7 @@ node_modules/
 
 
 404.html
-public/script/token.js
+public/src/token.js
 
 .vs
 .firebaserc

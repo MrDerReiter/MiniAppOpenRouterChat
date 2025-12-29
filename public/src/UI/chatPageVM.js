@@ -3,16 +3,11 @@ import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
 
 export class ChatPageVM {
-	/** @type {HTMLDivElement} */
-	spinner = document.getElementById("spinner");
-	/** @type {HTMLTextAreaElement} */
-	promptPanel = document.getElementById("prompt");
-	/** @type {HTMLDivElement} */
-	messagesContainer = document.getElementById("messages-container");
-	/** @type {HTMLButtonElement} */
-	submitButton = document.getElementById("submit-button");
-	/** @type {HTMLButtonElement} */
-	clearButton = document.getElementById("clear-button");
+  /** @type {HTMLDivElement} */ spinner = document.getElementById("spinner");
+  /** @type {HTMLTextAreaElement} */ promptPanel = document.getElementById("prompt");
+	/** @type {HTMLDivElement} */ messagesContainer = document.getElementById("messages-container");
+	/** @type {HTMLButtonElement} */ submitButton = document.getElementById("submit-button");
+	/** @type {HTMLButtonElement}	*/ clearButton = document.getElementById("clear-button");
 
 
 	toggleWaitingMode() {
@@ -31,7 +26,7 @@ export class ChatPageVM {
 			event.target.onfocus = null;
 		};
 	}
-	/** @param {Object[]} messages */
+	/** @param {Array} messages */
 	renderMessages(messages) {
 		messages.forEach(message => {
 			if (message.role == "user") {
