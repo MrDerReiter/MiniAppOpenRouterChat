@@ -70,8 +70,10 @@ node_modules/
 
 
 404.html
-public/src/token.js
+src/token.ts
+public/.compiled
 
 .vs
 .firebaserc
 firebase.json
+tsconfig.json
