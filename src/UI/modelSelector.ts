@@ -1,5 +1,5 @@
 import { token } from "./../token.js";
-import { AIAgent, AIRouter, AIModelInfo } from "./../components/openRouterAIAgent/index.js";
+import { AIAgent, AIRouter } from "./../components/openRouterAIAgent/index.js";
 import { isFreeModel, createErrorMessage } from "./../components/helpers.js";
 
 
