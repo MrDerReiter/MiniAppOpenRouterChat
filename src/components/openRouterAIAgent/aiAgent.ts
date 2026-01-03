@@ -1,6 +1,19 @@
 import { AIRouter } from "./aiRouter.js";
 
 
+export type Message = {
+	role: string;
+	content: string;
+}
+export type AIModelInfo = {
+	id: string,
+	name: string,
+	pricing: {
+		prompt: string,
+		completion: string
+	}
+}
+
 /**
  * Универсальный AI-агент для удобного обращения к популярным сервисам LLM. По умолчанию ориентирован на сервис OpenRouter.ai, но может также быть настроен на взаимодействие и с другими сервисами.
  * Предоставляет простой контракт взаимодействия с LLM, позволяя абстрагироваться от HTTP-запросов и JSON-обьектов с неочевидной структурой.

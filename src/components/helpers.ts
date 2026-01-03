@@ -1,3 +1,6 @@
+import { AIModelInfo } from "./openRouterAIAgent/index.js";
+
+
 export function isFreeModel(model: AIModelInfo) {
 	return model.pricing.prompt == "0" &&
 		model.pricing.completion == "0";

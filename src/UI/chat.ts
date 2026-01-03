@@ -1,6 +1,6 @@
 import { token } from "./../token.js";
 import { ChatPageVM } from "./chatPageVM.js";
-import { AIAgent, AIRouter } from "./../components/openRouterAIAgent/index.js";
+import { AIAgent, AIRouter, Message } from "./../components/openRouterAIAgent/index.js";
 
 
 async function handleQuery() {
