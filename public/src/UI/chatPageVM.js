@@ -1,14 +1,13 @@
 import { createErrorMessage } from "../components/helpers.js";
-import { Message } from "../components/openRouterAIAgent/aiAgent.js";
-import { marked as parser } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
 
 export class ChatPageVM {
-	public spinner = document.getElementById("spinner") as HTMLDivElement;
-	public promptPanel = document.getElementById("prompt") as HTMLTextAreaElement;
-	public messagesContainer = document.getElementById("messages-container") as HTMLDivElement;
-	public submitButton = document.getElementById("submit-button") as HTMLButtonElement;
-	public clearButton = document.getElementById("clear-button") as HTMLButtonElement;
+  /** @type {HTMLDivElement} */ spinner = document.getElementById("spinner");
+  /** @type {HTMLTextAreaElement} */ promptPanel = document.getElementById("prompt");
+	/** @type {HTMLDivElement} */ messagesContainer = document.getElementById("messages-container");
+	/** @type {HTMLButtonElement} */ submitButton = document.getElementById("submit-button");
+	/** @type {HTMLButtonElement}	*/ clearButton = document.getElementById("clear-button");
 
 
 	toggleWaitingMode() {
@@ -21,14 +20,14 @@ export class ChatPageVM {
 		this.promptPanel.style.borderColor = "red";
 		this.promptPanel.placeholder = "Вы не написали запрос!";
 
-		this.promptPanel.onfocus = () => {
-			this.promptPanel.style.borderColor = "";
-			this.promptPanel.placeholder = "";
-			this.promptPanel.onfocus = null;
+		this.promptPanel.onfocus = (event) => {
+			event.target.style.borderColor = "";
+			event.target.placeholder = "";
+			event.target.onfocus = null;
 		};
 	}
-
-	renderMessages(messages: Array<Message>) {
+	/** @param {Array} messages */
+	renderMessages(messages) {
 		messages.forEach(message => {
 			if (message.role == "user") {
 				const messageBlock = document.createElement("p");
@@ -39,24 +38,27 @@ export class ChatPageVM {
 			}
 
 			const messageBlock = document.createElement("div");
-			messageBlock.innerHTML = parser.parse(message.content);
+			messageBlock.innerHTML = marked.parse(message.content);
 			messageBlock.querySelectorAll("table").forEach(table => table.remove());
 			this.messagesContainer.append(messageBlock);
 		});
 	}
-
-	renderNextDialog(prompt: string, answer: string) {
+	/**
+	 * @param {String} prompt
+	 * @param {String} answer
+	 */
+	renderNextDialog(prompt, answer) {
 		const userMessage = document.createElement("p");
 		const answerMessage = document.createElement("div");
 
 		userMessage.textContent = prompt;
-		answerMessage.innerHTML = parser.parse(answer);
+		answerMessage.innerHTML = marked.parse(answer);
 		answerMessage.querySelectorAll("table").forEach(table => table.remove());
 
 		this.messagesContainer.append(userMessage, answerMessage);
 	}
-
-	renderErrorMessage(error: Error) {
+	/** @param {Error} error */
+	renderErrorMessage(error) {
 		this.messagesContainer.append(createErrorMessage(error));
 	}
 

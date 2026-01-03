@@ -1,5 +1,5 @@
 import { token } from "./../token.js";
-import { AIAgent, AIRouter, AIModelInfo } from "./../components/openRouterAIAgent/index.js";
+import { AIAgent, AIRouter } from "./../components/openRouterAIAgent/index.js";
 import { isFreeModel, createErrorMessage } from "./../components/helpers.js";
 
 
@@ -18,7 +18,7 @@ async function renderModelList() {
 	}
 }
 
-function createModelButton(model: AIModelInfo) {
+function createModelButton(model) {
 	const button = document.createElement("li");
 	button.textContent = model.name.replace(" (free)", "");
 	button.onclick = () => location.assign(`chat.html?model=${model.id}`);
@@ -28,8 +28,8 @@ function createModelButton(model: AIModelInfo) {
 
 
 const page = {
-	spinner: document.getElementById("spinner") as HTMLDivElement,
-	selector: document.getElementById("modelSelector") as HTMLUListElement
+	spinner: document.getElementById("spinner"),
+	selector: document.getElementById("modelSelector")
 };
 
 renderModelList();

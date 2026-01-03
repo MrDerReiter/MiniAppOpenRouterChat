@@ -1,6 +1,6 @@
 import { token } from "./../token.js";
 import { ChatPageVM } from "./chatPageVM.js";
-import { AIAgent, AIRouter, Message } from "./../components/openRouterAIAgent/index.js";
+import { AIAgent, AIRouter } from "./../components/openRouterAIAgent/index.js";
 
 
 async function handleQuery() {
@@ -20,23 +20,26 @@ async function handleQuery() {
 		page.clearErrorMessages();
 		page.renderNextDialog(prompt, answer);
 
-		new Promise<void>(resolve => {
+		new Promise(resolve => {
 			localStorage.removeItem("lastPrompt");
-			localStorage.setItem("context", JSON.stringify(agent.context ?? []));
+			localStorage.setItem("context", JSON.stringify(agent.context));
 			resolve();
 		});
 	}
 	catch (error) { handleError(error, prompt); }
 	finally { page.toggleWaitingMode(); }
 }
-
-function handleError(error: Error, lastPrompt: string) {
+/**
+ * @param {Error} error
+ * @param {String} lastPrompt
+ */
+function handleError(error, lastPrompt) {
 	localStorage.setItem("lastPrompt", lastPrompt);
 	page.clearErrorMessages();
 	page.renderErrorMessage(error);
 }
-
-function loadContext(context: Array<Message>) {
+/** @param {Object[]} context */
+function loadContext(context) {
 	agent.loadContext(context);
 	page.renderMessages(context);
 }

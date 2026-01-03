@@ -9,26 +9,24 @@
         href="style/bootstrap.min.css">
   <link rel="stylesheet"
         href="style/index.css">
-  <link rel="icon"
-        href="https://files.buildwithfern.com/openrouter.docs.buildwithfern.com/docs/9ea97c59357c47db235d0591b7ed936d40b94e3dd02030a36e26b406671f011d/content/assets/favicon.ico"/>
-  <title>OpenRouter Chat</title>
+  <title>Open Router Chat</title>
 </head>
 
 <body>
-  <h1>Выберите LLM из списка:</h1>
-  <ul id="modelSelector"
-      hidden></ul>
-  <div id="spinner"
-       class="spinner-border"
-       role="status">
-    <span class="visually-hidden">Загрузка...</span>
-  </div>
-  <template id="error-message-template">
-    Что-то пошло не так:<span class="error-message">ErrorText</span>.<br/>
-    Проверьте соединение с интернетом и/или попробуйте обновить страницу.
-  </template>
-  <script src=".compiled/UI/modelSelector.js"
-          type="module"></script>
+	<h1>Выберите LLM из списка:</h1>
+	<ul id="modelSelector"
+			hidden></ul>
+	<div id="spinner"
+			 class="spinner-border"
+			 role="status">
+		<span class="visually-hidden">Загрузка...</span>
+	</div>
+	<template id="error-message-template">
+		Что-то пошло не так:<span class="error-message">ErrorText</span>.<br />
+		Проверьте соединение с интернетом и/или попробуйте обновить страницу.
+	</template>
+	<script src="src/UI/modelSelector.js"
+					type="module"></script>
 </body>
 
 </html>
