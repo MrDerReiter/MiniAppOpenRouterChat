@@ -1,5 +1,5 @@
 import { token } from "./../token.js";
-import { ChatPageVM } from "./chatPageVM.js";
+import { ChatPage } from "./chatPageVM.js";
 import { AIAgent, AIRouter } from "./../components/openRouterAIAgent/index.js";
 
 
@@ -29,16 +29,13 @@ async function handleQuery() {
 	catch (error) { handleError(error, prompt); }
 	finally { page.toggleWaitingMode(); }
 }
-/**
- * @param {Error} error
- * @param {String} lastPrompt
- */
+
 function handleError(error, lastPrompt) {
 	localStorage.setItem("lastPrompt", lastPrompt);
 	page.clearErrorMessages();
 	page.renderErrorMessage(error);
 }
-/** @param {Object[]} context */
+
 function loadContext(context) {
 	agent.loadContext(context);
 	page.renderMessages(context);
@@ -57,7 +54,7 @@ function clearContext() {
 }
 
 
-const page = new ChatPageVM();
+const page = new ChatPage();
 const params = new URLSearchParams(location.search);
 const lastPrompt = localStorage.getItem("lastPrompt");
 const savedContext = localStorage.getItem("context");

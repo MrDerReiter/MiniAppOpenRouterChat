@@ -3,14 +3,10 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport"
-				content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet"
-				href="style/bootstrap.min.css">
-	<link rel="stylesheet"
-				href="style/chat.css">
-	<link rel="icon"
-				href="https://files.buildwithfern.com/openrouter.docs.buildwithfern.com/docs/9ea97c59357c47db235d0591b7ed936d40b94e3dd02030a36e26b406671f011d/content/assets/favicon.ico" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style/bootstrap.min.css">
+	<link rel="stylesheet" href="style/chat.css">
+	<link rel="icon" href="https://files.buildwithfern.com/openrouter.docs.buildwithfern.com/docs/9ea97c59357c47db235d0591b7ed936d40b94e3dd02030a36e26b406671f011d/content/assets/favicon.ico" />
 	<title>OpenRouter Chat</title>
 </head>
 
@@ -18,14 +14,8 @@
 	<h2 id="top">Напишите ваш запрос к LLM:</h2>
 	<form>
 		<textarea id="prompt"></textarea>
-		<button type="button"
-						id="submit-button">
-			Отправить
-		</button>
-		<button type="button"
-						id="clear-button">
-			Очистить контекст
-		</button>
+		<button type="button" id="submit-button">Отправить</button>
+		<button type="button"	id="clear-button">Очистить контекст</button>
 	</form>
 	<div id="messages-container"></div>
 	<div id="spinner"
@@ -34,19 +24,15 @@
 			 hidden>
 		<span class="visually-hidden">Загрузка...</span>
 	</div>
-	<a id="bottom"
-		 href="index.html">←Назад к выбору модели</a>
-	<a class="page-marker top-marker"
-		 href="#top">↑</a>
-	<a class="page-marker bottom-marker"
-		 href="#bottom">↓</a>
+	<a id="bottom" href="index.html">←Назад к выбору модели</a>
+	<a class="page-marker top-marker" href="#top">↑</a>
+	<a class="page-marker bottom-marker" href="#bottom">↓</a>
 
 	<template id="error-message-template">
 		Что-то пошло не так:<span class="error-message">ErrorText</span>.<br />
 		Попробуйте отправить новый запрос, или выберите другую модель.
 	</template>
-	<script src="src/UI/chat.js"
-					type="module"></script>
+	<script src="src/UI/chat.js" type="module"></script>
 </body>
 
 </html>

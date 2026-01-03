@@ -1,73 +1,70 @@
 import { createErrorMessage } from "../components/helpers.js";
-import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+import { marked as parser } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
 
-export class ChatPageVM {
-  /** @type {HTMLDivElement} */ spinner = document.getElementById("spinner");
-  /** @type {HTMLTextAreaElement} */ promptPanel = document.getElementById("prompt");
-	/** @type {HTMLDivElement} */ messagesContainer = document.getElementById("messages-container");
-	/** @type {HTMLButtonElement} */ submitButton = document.getElementById("submit-button");
-	/** @type {HTMLButtonElement}	*/ clearButton = document.getElementById("clear-button");
+export class ChatPage {
+  spinner = document.getElementById("spinner");
+  promptPanel = document.getElementById("prompt");
+  messagesContainer = document.getElementById("messages-container");
+  submitButton = document.getElementById("submit-button");
+  clearButton = document.getElementById("clear-button");
 
 
-	toggleWaitingMode() {
-		this.spinner.hidden = !this.spinner.hidden;
-		this.submitButton.disabled = !this.submitButton.disabled;
-		this.clearButton.disabled = !this.clearButton.disabled;
-	}
+  toggleWaitingMode() {
+    this.spinner.hidden = !this.spinner.hidden;
+    this.submitButton.disabled = !this.submitButton.disabled;
+    this.clearButton.disabled = !this.clearButton.disabled;
+  }
 
-	renderQueryDenied() {
-		this.promptPanel.style.borderColor = "red";
-		this.promptPanel.placeholder = "Вы не написали запрос!";
+  renderQueryDenied() {
+    this.promptPanel.style.borderColor = "red";
+    this.promptPanel.placeholder = "Вы не написали запрос!";
 
-		this.promptPanel.onfocus = (event) => {
-			event.target.style.borderColor = "";
-			event.target.placeholder = "";
-			event.target.onfocus = null;
-		};
-	}
-	/** @param {Array} messages */
-	renderMessages(messages) {
-		messages.forEach(message => {
-			if (message.role == "user") {
-				const messageBlock = document.createElement("p");
-				messageBlock.textContent = message.content;
+    this.promptPanel.onfocus = (event) => {
+      event.target.style.borderColor = "";
+      event.target.placeholder = "";
+      event.target.onfocus = null;
+    };
+  }
 
-				this.messagesContainer.append(messageBlock);
-				return;
-			}
+  renderMessages(messages) {
+    messages.forEach(message => {
+      if (message.role == "user") {
+        const messageBlock = document.createElement("p");
+        messageBlock.textContent = message.content;
 
-			const messageBlock = document.createElement("div");
-			messageBlock.innerHTML = marked.parse(message.content);
-			messageBlock.querySelectorAll("table").forEach(table => table.remove());
-			this.messagesContainer.append(messageBlock);
-		});
-	}
-	/**
-	 * @param {String} prompt
-	 * @param {String} answer
-	 */
-	renderNextDialog(prompt, answer) {
-		const userMessage = document.createElement("p");
-		const answerMessage = document.createElement("div");
+        this.messagesContainer.append(messageBlock);
+        return;
+      }
 
-		userMessage.textContent = prompt;
-		answerMessage.innerHTML = marked.parse(answer);
-		answerMessage.querySelectorAll("table").forEach(table => table.remove());
+      const messageBlock = document.createElement("div");
+      messageBlock.innerHTML = parser.parse(message.content);
+      messageBlock.querySelectorAll("table").forEach(table => table.remove());
+      this.messagesContainer.append(messageBlock);
+    });
+  }
 
-		this.messagesContainer.append(userMessage, answerMessage);
-	}
-	/** @param {Error} error */
-	renderErrorMessage(error) {
-		this.messagesContainer.append(createErrorMessage(error));
-	}
+  renderNextDialog(prompt, answer) {
+    const userMessage = document.createElement("p");
+    const answerMessage = document.createElement("div");
 
-	clearErrorMessages() {
-		this.messagesContainer.querySelectorAll(".error-response")
-			.forEach(errorMessage => errorMessage.remove());
-	}
+    userMessage.textContent = prompt;
+    answerMessage.innerHTML = parser.parse(answer);
+    answerMessage.querySelectorAll("table").forEach(table => table.remove());
 
-	clearAllMessages() { this.messagesContainer.innerHTML = ""; }
+    this.messagesContainer.append(userMessage, answerMessage);
+  }
 
-	clearPrompt() { this.promptPanel.value = ""; }
+  renderErrorMessage(error) {
+    this.messagesContainer.append(createErrorMessage(error));
+  }
+
+  clearErrorMessages() {
+    this.messagesContainer.querySelectorAll(".error-response")
+      .forEach(errorMessage => errorMessage.remove());
+  }
+
+  clearAllMessages() { this.messagesContainer.innerHTML = ""; }
+
+  clearPrompt() { this.promptPanel.value = ""; }
 }
