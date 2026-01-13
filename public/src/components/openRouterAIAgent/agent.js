@@ -1,7 +1,7 @@
 /**
- * @param {{url: string, token: string}} options
- * @param {(model: Object) => boolean} predicate
- * @returns {Promise<{id: string, name: string, pricing: {prompt: string, completion: string}}[]}
+ * @param {RequestOptions} options
+ * @param {(model: AIModelInfo) => boolean} predicate
+ * @returns {Promise<AIModelInfo[]>}
  */
 export async function getAIModels(options, predicate = null) {
   const httpRequest = {
@@ -11,17 +11,17 @@ export async function getAIModels(options, predicate = null) {
 
   return fetch(options.url, httpRequest)
     .then(response => {
-      if (response.ok) return response.json()
+      if (response.ok) return response.json();
       else throw new Error(`запрос отклонён с кодом ${response.status}`);
     }).then(body => {
-      const models = body.data;
+      const models = /**@type {AIModelInfo[]}*/ (body.data);
       if (predicate) return models.filter(predicate);
       else return models;
     }).catch(error => Promise.reject(error));
 }
 /**
  * @param {string} prompt
- * @param {{url: string, token: string, modelID: string}} options
+ * @param {RequestOptions} options
  * @returns {Promise<string>}
  */
 export async function singleCompletion(prompt, options) {
@@ -43,8 +43,8 @@ export async function singleCompletion(prompt, options) {
     .catch(error => Promise.reject(error));
 }
 /**
- * @param {{role: string, content: string}[]} context
- * @param {{url: string, token: string, modelID: string}} options
+ * @param {Message[]} context
+ * @param {RequestOptions} options
  * @returns {Promise<string>}
  */
 export async function chatCompletion(context, options) {

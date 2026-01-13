@@ -1,13 +1,12 @@
-import { createErrorMessage } from "../components/helpers.js";
 import { marked as markupParser } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+import { createErrorMessage } from "../components/helpers.js";
 import * as storage from "./../components/storage.js";
 
-
 const spinner = document.getElementById("spinner");
-const promptPanel = document.getElementById("prompt");
+const promptPanel = /**@type {HTMLTextAreaElement}*/ (document.getElementById("prompt"));
 const messagesContainer = document.getElementById("messages-container");
-const submitButton = document.getElementById("submit-button");
-const clearButton = document.getElementById("clear-button");
+const submitButton = /**@type {HTMLButtonElement}*/ (document.getElementById("submit-button"));
+const clearButton = /**@type {HTMLButtonElement}*/ (document.getElementById("clear-button"));
 
 /** @param {(prompt: string, context: Array) => Promise<string>} aiAnswerSource */
 export function init(aiAnswerSource) {
@@ -25,9 +24,10 @@ export function init(aiAnswerSource) {
   toggleWaitingMode();
 }
 
-/** @param {(prompt: string, context: Array) => Promise<string>} getAnswer */
+/** @param {(prompt: string, context: Message[]) => Promise<string>} getAnswer */
 async function renderQuery(getAnswer) {
-  let prompt = promptPanel.value;
+
+  const prompt = promptPanel.value;
   if (!prompt) {
     renderQueryDenied();
     return;
@@ -35,15 +35,17 @@ async function renderQuery(getAnswer) {
 
   toggleWaitingMode();
   try {
-    let context = storage.loadContext();
-    let answer = await getAnswer(prompt, context);
+    const context = storage.loadContext();
+    const answer = await getAnswer(prompt, context);
     promptPanel.value = "";
     clearErrorMessages();
     renderNextDialog(prompt, answer);
 
-    prompt = { role: "user", content: prompt };
-    answer = { role: "assistant", content: answer };
-    storage.saveContext(context ? [...context, prompt, answer] : [prompt, answer]);
+    const promptMessage = { role: "user", content: prompt };
+    const answerMessage = { role: "assistant", content: answer };
+    storage.saveContext(context ?
+      [...context, promptMessage, answerMessage] :
+      [promptMessage, answerMessage]);
   } catch (error) {
     storage.saveBackupPrompt(promptPanel.value);
     messagesContainer.querySelectorAll(".error-response")
@@ -57,10 +59,10 @@ function renderQueryDenied() {
   promptPanel.style.borderColor = "red";
   promptPanel.placeholder = "Вы не написали запрос!";
 
-  promptPanel.onfocus = (event) => {
-    event.target.style.borderColor = "";
-    event.target.placeholder = "";
-    event.target.onfocus = null;
+  promptPanel.onfocus = () => {
+    promptPanel.style.borderColor = "";
+    promptPanel.placeholder = "";
+    promptPanel.onfocus = null;
   };
 }
 /**
@@ -77,7 +79,7 @@ function renderNextDialog(prompt, answer) {
 
   messagesContainer.append(userMessage, answerMessage);
 }
-/** @param {{role: string, content: string}} message */
+/** @param {Message} message */
 function renderMessage(message) {
   if (message.role == "user") {
     const messageBlock = document.createElement("p");

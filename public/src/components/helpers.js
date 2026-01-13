@@ -1,4 +1,4 @@
-/** @param {{id: string, name: string, pricing: {prompt: string, completion: string}}} model */
+/** @param {AIModelInfo} model */
 export function isFreeModel(model) {
 	return model.pricing.prompt == "0" &&
 		model.pricing.completion == "0"

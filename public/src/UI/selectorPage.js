@@ -4,21 +4,19 @@ import { createErrorMessage } from "../components/helpers.js";
 const selector = document.getElementById("modelSelector");
 const spinner = document.getElementById("spinner");
 
-/** @param {() => Promise<Object[]>} getAIModels */
+/** @param {() => Promise<AIModelInfo[]>} getAIModels */
 export async function init(getAIModels) {
   try {
     const models = await getAIModels();
     models.forEach(model => selector.append(createModelButton(model)));
   }
-  catch (error) { showErrorMessage(error); }
+  catch (error) { document.body.append(createErrorMessage(error)); }
   finally {
     spinner.hidden = true;
     selector.hidden = false;
   }
 }
-/** @param {Error} error */
-function showErrorMessage(error) { document.body.append(createErrorMessage(error)) };
-/** @param {{id: string, name: string}} model */
+/** @param {AIModelInfo} model */
 function createModelButton(model) {
   const button = document.createElement("li");
   button.textContent = model.name.replace(" (free)", "");

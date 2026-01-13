@@ -6,11 +6,11 @@ import * as page from "./UI/chatPage.js";
 
 /**
  * @param {string} prompt
- * @param {{role: string, content: string}[]} context
+ * @param {Message[]} context
  */
 async function makeRequestToAI(prompt, context = null) {
-  prompt = { role: "user", content: prompt };
-  context = context ? [...context, prompt] : [prompt];
+  const promptMessage = { role: "user", content: prompt };
+  context = context ? [...context, promptMessage] : [promptMessage];
   const answer = await chatCompletion(context, requestOptions);
 
   return answer;
