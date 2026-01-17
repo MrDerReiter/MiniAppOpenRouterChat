@@ -4,10 +4,6 @@ import { openRouter } from "./components/openRouterAIAgent/routers.js";
 import * as page from "./UI/chatPage.js";
 
 
-/**
- * @param {string} prompt
- * @param {{role: string, content: string}[]} context
- */
 async function makeRequestToAI(prompt, context = null) {
   prompt = { role: "user", content: prompt };
   context = context ? [...context, prompt] : [prompt];

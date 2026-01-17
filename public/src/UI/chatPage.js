@@ -9,7 +9,7 @@ const messagesContainer = document.getElementById("messages-container");
 const submitButton = document.getElementById("submit-button");
 const clearButton = document.getElementById("clear-button");
 
-/** @param {(prompt: string, context: Array) => Promise<string>} aiAnswerSource */
+
 export function init(aiAnswerSource) {
   toggleWaitingMode();
 
@@ -25,7 +25,6 @@ export function init(aiAnswerSource) {
   toggleWaitingMode();
 }
 
-/** @param {(prompt: string, context: Array) => Promise<string>} getAnswer */
 async function renderQuery(getAnswer) {
   let prompt = promptPanel.value;
   if (!prompt) {
@@ -57,16 +56,13 @@ function renderQueryDenied() {
   promptPanel.style.borderColor = "red";
   promptPanel.placeholder = "Вы не написали запрос!";
 
-  promptPanel.onfocus = (event) => {
-    event.target.style.borderColor = "";
-    event.target.placeholder = "";
-    event.target.onfocus = null;
+  promptPanel.onfocus = function () {
+    this.style.borderColor = "";
+    this.placeholder = "";
+    this.onfocus = null;
   };
 }
-/**
- * @param {string} prompt
- * @param {string} answer
- */
+
 function renderNextDialog(prompt, answer) {
   const userMessage = document.createElement("p");
   const answerMessage = document.createElement("div");
@@ -77,7 +73,7 @@ function renderNextDialog(prompt, answer) {
 
   messagesContainer.append(userMessage, answerMessage);
 }
-/** @param {{role: string, content: string}} message */
+
 function renderMessage(message) {
   if (message.role == "user") {
     const messageBlock = document.createElement("p");

@@ -1,8 +1,3 @@
-/**
- * @param {{url: string, token: string}} options
- * @param {(model: Object) => boolean} predicate
- * @returns {Promise<{id: string, name: string, pricing: {prompt: string, completion: string}}[]}
- */
 export async function getAIModels(options, predicate = null) {
   const httpRequest = {
     method: "GET",
@@ -19,11 +14,7 @@ export async function getAIModels(options, predicate = null) {
       else return models;
     }).catch(error => Promise.reject(error));
 }
-/**
- * @param {string} prompt
- * @param {{url: string, token: string, modelID: string}} options
- * @returns {Promise<string>}
- */
+
 export async function singleCompletion(prompt, options) {
   const httpRequest = {
     method: "POST",
@@ -42,11 +33,7 @@ export async function singleCompletion(prompt, options) {
     .then(body => body.choices[0].text)
     .catch(error => Promise.reject(error));
 }
-/**
- * @param {{role: string, content: string}[]} context
- * @param {{url: string, token: string, modelID: string}} options
- * @returns {Promise<string>}
- */
+
 export async function chatCompletion(context, options) {
   const httpRequest = {
     method: "POST",
