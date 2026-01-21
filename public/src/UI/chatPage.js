@@ -1,6 +1,5 @@
 import { createErrorMessage } from "../components/helpers.js";
 import { marked as markupParser } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
-import * as storage from "./../components/storage.js";
 
 
 const spinner = document.getElementById("spinner");
@@ -13,8 +12,9 @@ const clearButton = document.getElementById("clear-button");
 export function init(aiAnswerSource) {
   toggleWaitingMode();
 
-  const lastPrompt = storage.loadBackupPrompt();
-  const context = storage.loadContext();
+  const lastPrompt = localStorage.getItem("lastPrompt");
+  const savedContext = localStorage.getItem("context");
+  const context = savedContext ? JSON.parse(savedContext) : null;
 
   if (lastPrompt) promptPanel.value = lastPrompt;
   if (context) context.forEach(renderMessage);
@@ -26,7 +26,7 @@ export function init(aiAnswerSource) {
 }
 
 async function renderQuery(getAnswer) {
-  let prompt = promptPanel.value;
+  const prompt = promptPanel.value;
   if (!prompt) {
     renderQueryDenied();
     return;
@@ -34,21 +34,27 @@ async function renderQuery(getAnswer) {
 
   toggleWaitingMode();
   try {
-    let context = storage.loadContext();
-    let answer = await getAnswer(prompt, context);
+    const savedContext = localStorage.getItem("context");
+    const context = savedContext ? JSON.parse(savedContext) : null;
+    const answer = await getAnswer(prompt, context);
     promptPanel.value = "";
     clearErrorMessages();
     renderNextDialog(prompt, answer);
 
-    prompt = { role: "user", content: prompt };
-    answer = { role: "assistant", content: answer };
-    storage.saveContext(context ? [...context, prompt, answer] : [prompt, answer]);
-  } catch (error) {
-    storage.saveBackupPrompt(promptPanel.value);
-    messagesContainer.querySelectorAll(".error-response")
-      .forEach(errorMessage => errorMessage.remove());
+    const promptMessage = { role: "user", content: prompt };
+    const answerMessage = { role: "assistant", content: answer };
+    queueMicrotask(() => {
+      localStorage.removeItem("lastPrompt");
+      localStorage.setItem("context", JSON.stringify(context ?
+        [...context, promptMessage, answerMessage] :
+        [promptMessage, answerMessage]));
+    });
 
+  } catch (error) {
+    localStorage.setItem("lastPrompt", promptPanel.value);
+    clearErrorMessages();
     messagesContainer.append(createErrorMessage(error));
+
   } finally { toggleWaitingMode(); }
 }
 
@@ -97,7 +103,7 @@ function clearErrorMessages() {
 function clearContextView() {
   toggleWaitingMode();
 
-  storage.clear();
+  localStorage.clear();
   promptPanel.value = "";
   messagesContainer.innerHTML = "";
 

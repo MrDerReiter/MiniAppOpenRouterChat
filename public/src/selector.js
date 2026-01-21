@@ -5,7 +5,4 @@ import { isFreeModel } from "./components/helpers.js";
 import * as page from "./UI/selectorPage.js";
 
 
-page.init(() => new Promise(resolve => {
-  getAIModels({ url: openRouter.modelsListUrl, token }, isFreeModel)
-    .then(models => resolve(models));
-}));
+page.init(() => getAIModels({ url: openRouter.modelsListUrl, token }, isFreeModel));

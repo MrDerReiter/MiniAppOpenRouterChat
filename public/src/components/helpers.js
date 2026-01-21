@@ -5,9 +5,11 @@ export function isFreeModel(model) {
 
 export function createErrorMessage(error) {
 	const errorMessage = document.createElement("p");
-	const template = document.getElementById("error-message-template");
-
 	errorMessage.classList.add("error-response");
-	errorMessage.innerHTML = template.innerHTML.replace("ErrorText", error.message);
+
+	const template = document.getElementById("error-message-template");
+	errorMessage.append(template.content.cloneNode(true));
+	errorMessage.querySelector("span").textContent = error.message;
+
 	return errorMessage;
 }

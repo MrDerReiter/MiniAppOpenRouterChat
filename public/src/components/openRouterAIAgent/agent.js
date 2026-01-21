@@ -29,9 +29,11 @@ export async function singleCompletion(prompt, options) {
     .then(response => {
       if (response.ok) return response.json();
       else throw new Error(`Запрос отклонён с кодом ${response.status}.`)
-    })
-    .then(body => body.choices[0].text)
-    .catch(error => Promise.reject(error));
+    }).then(body => {
+      const answer = body?.choices?.[0].text;
+      if (answer) return answer;
+      else throw new Error("сервер прислал невалидный ответ");
+    }).catch(error => Promise.reject(error));
 }
 
 export async function chatCompletion(context, options) {
@@ -48,7 +50,9 @@ export async function chatCompletion(context, options) {
     .then(response => {
       if (response.ok) return response.json();
       else throw new Error(`запрос отклонён с кодом ${response.status}`);
-    })
-    .then(body => body.choices[0].message.content)
-    .catch(error => Promise.reject(error));
+    }).then(body => {
+      const answer = body?.choices?.[0].message.content;
+      if (answer) return answer;
+      else throw new Error("сервер прислал невалидный ответ");
+    }).catch(error => Promise.reject(error));
 }
