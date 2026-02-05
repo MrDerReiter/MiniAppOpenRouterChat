@@ -4,18 +4,16 @@ import { openRouter } from "./components/openRouterAIAgent/routers.js";
 import * as page from "./UI/chatPage.js";
 
 
-function makeRequestToAI(prompt, context = null) {
+function makeRequestToAI(prompt, context) {
   const promptMessage = { role: "user", content: prompt };
   const actualContext = context ? [...context, promptMessage] : [promptMessage];
-  return chatCompletion(actualContext, requestOptions);
+
+  return chatCompletion({
+    messages: actualContext,
+    model: new URLSearchParams(location.search).get("model"),
+    url: openRouter.chatCompletionUrl,
+    token
+  });
 }
-
-
-const params = new URLSearchParams(location.search);
-const requestOptions = {
-  url: openRouter.chatCompletionUrl,
-  modelID: params.get("model"),
-  token
-};
 
 page.init(makeRequestToAI);

@@ -5,4 +5,7 @@ import { isFreeModel } from "./components/helpers.js";
 import * as page from "./UI/selectorPage.js";
 
 
-page.init(() => getAIModels({ url: openRouter.modelsListUrl, token }, isFreeModel));
+page.init(() => getAIModels({
+  url: openRouter.modelsListUrl,
+  token
+}, isFreeModel));

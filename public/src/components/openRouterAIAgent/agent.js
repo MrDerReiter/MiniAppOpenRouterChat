@@ -1,12 +1,12 @@
-export async function getAIModels(options, predicate = null) {
+export async function getAIModels({ url, token }, predicate) {
   const httpRequest = {
     method: "GET",
-    headers: { Authorization: `Bearer ${options.token}` }
-  }
+    headers: { Authorization: `Bearer ${token}` }
+  };
 
-  return fetch(options.url, httpRequest)
+  return fetch(url, httpRequest)
     .then(response => {
-      if (response.ok) return response.json()
+      if (response.ok) return response.json();
       else throw new Error(`запрос отклонён с кодом ${response.status}`);
     }).then(body => {
       const models = body.data;
@@ -15,20 +15,20 @@ export async function getAIModels(options, predicate = null) {
     }).catch(error => Promise.reject(error));
 }
 
-export async function singleCompletion(prompt, options) {
+export async function singleCompletion({ model, prompt, url, token }) {
   const httpRequest = {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${options.token}`,
+      "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ model: options.modelID, prompt: prompt })
-  }
+    body: JSON.stringify({ model, prompt })
+  };
 
-  return fetch(options.url, httpRequest)
+  return fetch(url, httpRequest)
     .then(response => {
       if (response.ok) return response.json();
-      else throw new Error(`Запрос отклонён с кодом ${response.status}.`)
+      else throw new Error(`Запрос отклонён с кодом ${response.status}.`);
     }).then(body => {
       const answer = body?.choices?.[0].text;
       if (answer) return answer;
@@ -36,17 +36,17 @@ export async function singleCompletion(prompt, options) {
     }).catch(error => Promise.reject(error));
 }
 
-export async function chatCompletion(context, options) {
+export async function chatCompletion({ messages, model, url, token }) {
   const httpRequest = {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${options.token}`,
+      "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ messages: context, model: options.modelID })
-  }
+    body: JSON.stringify({ messages, model })
+  };
 
-  return fetch(options.url, httpRequest)
+  return fetch(url, httpRequest)
     .then(response => {
       if (response.ok) return response.json();
       else throw new Error(`запрос отклонён с кодом ${response.status}`);
