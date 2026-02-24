@@ -1,0 +1,27 @@
+.ref {
+  color: #eee;
+  text-decoration: none;
+}
+
+.ref:hover {
+  color: cadetblue;
+  cursor: pointer;
+}
+
+.page-anchor {
+  position: fixed;
+  width: 45px;
+  height: 45px;
+  font-size: 30px;
+  color: #aaa;
+}
+
+.scroll-top {
+  top: 100px;
+  right: 15px;
+}
+
+.scroll-bottom {
+  bottom: 50px;
+  right: 15px;
+}

@@ -1,0 +1,63 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  user-select: none;
+  min-width: 70%;
+  gap: 10px;
+}
+
+.prompt-box {
+  min-height: 150px;
+  padding: 5px;
+  font-size: 16px;
+  color: #eee;
+  background-color: #00072d;
+  border: 1px solid #0d2472;
+  border-radius: 5px;
+}
+
+.prompt-box:focus-visible {
+  outline-color: #0d2472;
+  box-shadow: 3px 3px 5px #123499;
+}
+
+.prompt-box::selection {
+  background-color: #eee;
+  color: #111;
+}
+
+.submit-button {
+  border: 1px solid #0d2472;
+  border-radius: 5px;
+  background-color: #051650;
+  color: #eee;
+  padding: 5px 10px 5px 10px;
+  font-size: 18px;
+  font-family: 'Franklin Gothic Medium';
+  transition: 0.5s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #121959, #172179, #384194);
+  border-color: #123499;
+  color: cadetblue;
+}
+
+.submit-button:active:not(:disabled) {
+  background-color: cadetblue;
+  color: #eee;
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  background-color: #111;
+  color: #eee;
+}
+
+@media (min-width: 1024px) {
+
+  form {
+    min-width: 600px;
+  }
+}
