@@ -23,9 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-
 .vs/
 .firebase/
 .firebaserc
+.src/token.ts
+.gitignore
 firebase.json
 deploy
