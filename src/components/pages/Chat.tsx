@@ -1,14 +1,13 @@
 import { useState, type MouseEvent } from "react";
 import { makeRequestToAI } from "../../service/helpers";
+import type { Props } from "../types";
 import Spinner from "../controls/Spinner";
 import PromptPanel from "../controls/PromptPanel";
 import MessagesContainer from "../controls/MessagesContainer";
 import "../../../style/chat.css";
 
 
-type ChatProps = { model: string; }
-
-export default function Chat(props: ChatProps) {
+export default function Chat(props: Props.Chat) {
   function performRequest(prompt: string) {
     setIsWaitingAnswer(true);
 

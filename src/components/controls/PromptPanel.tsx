@@ -1,13 +1,10 @@
 import { useRef, useState } from "react";
+import type { Props } from "../types";
 import "../../../style/components/promptPanel.css";
 
 
-type PromptPanelProps = {
-  onWaitingAnswer: (question: string) => Promise<void>;
-  onClearContext: () => void;
-}
 
-export default function PromptPanel(props: PromptPanelProps) {
+export default function PromptPanel(props: Props.PromptPanel) {
   function sendRequest() {
     if (!prompt) { denyRequest(); return; }
 

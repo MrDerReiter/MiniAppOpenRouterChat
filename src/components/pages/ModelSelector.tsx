@@ -1,15 +1,11 @@
 import { memo, useEffect, useState } from "react";
+import type { Props } from "../types";
 import Spinner from "../controls/Spinner";
 import ErrorMessage from "../controls/ErrorMessage";
 import "../../../style/modelSelector.css";
 
 
-type ModelSelectorProps = {
-  dataSource: Promise<IAIModel[]>;
-  onModelSelected: (modelID: string) => void;
-}
-
-export default memo(function (props: ModelSelectorProps) {
+export default memo(function (props: Props.ModelSelector) {
   const { dataSource, onModelSelected } = props;
   const [models, setModels] = useState<IAIModel[]>();
   const [error, setError] = useState<Error>();

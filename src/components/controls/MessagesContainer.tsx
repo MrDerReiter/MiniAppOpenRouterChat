@@ -1,10 +1,10 @@
 import { marked as markupParser } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+import type { Props } from "../types";
 import ErrorMessage from "./ErrorMessage";
 import "../../../style/components/messagesContainer.css";
 
-type MessagesContainerProps = { context: Message[], error?: Error }
 
-export default function MessagesContainer(props: MessagesContainerProps) {
+export default function MessagesContainer(props: Props.MessagesContainer) {
   const { context, error } = props;
 
   return (

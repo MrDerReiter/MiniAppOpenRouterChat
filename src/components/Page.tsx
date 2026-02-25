@@ -1,6 +1,4 @@
-import type { ReactElement } from "react";
+import type { Props } from "./types";
 
 
-type PageProps = { path: string; content: ReactElement; }
-
-export default function Page(props: PageProps) { return props.content; }
+export default function Page(props: Props.Page) { return props.content; }
