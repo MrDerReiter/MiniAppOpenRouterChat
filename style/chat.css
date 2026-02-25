@@ -18,10 +18,10 @@
 
 .scroll-top {
   top: 100px;
-  right: 15px;
+  right: 0.5rem;
 }
 
 .scroll-bottom {
   bottom: 50px;
-  right: 15px;
+  right: 0.5rem;
 }

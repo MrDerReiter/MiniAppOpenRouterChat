@@ -35,8 +35,13 @@
   scrollbar-color: lightgray transparent;
 }
 
+.answer table {
+  display: block;
+}
+
 .answer table td {
-  min-width: 200px;
+  padding: 10px;
+  min-width: 100px;
 }
 
 .answer::selection {
