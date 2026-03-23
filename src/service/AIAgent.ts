@@ -53,3 +53,12 @@ export async function chatCompletion(options: ChatCompletionOptions) {
     else throw new Error("сервер прислал невалидный ответ");
   }).catch((error: Error) => Promise.reject(error));
 }
+
+
+export const routers = {
+  openRouter: {
+    singleCompletionUrl: "https://openrouter.ai/api/v1/completions",
+    chatCompletionUrl: "https://openrouter.ai/api/v1/chat/completions",
+    modelsListUrl: "https://openrouter.ai/api/v1/models"
+  }
+}

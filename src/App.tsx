@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { getAIModels } from "./service/openRouterAIAgent/agent";
-import { openRouter } from "./service/openRouterAIAgent/routers";
+import { getAIModels, routers } from "./service/AIAgent";
 import { isFreeModel } from "./service/helpers";
 import Router from "./components/Router";
 import Page from "./components/Page";
@@ -18,7 +17,10 @@ export default function App() {
     window.dispatchEvent(new PopStateEvent("popstate"));
   }, []);
 
-  const models = useMemo(() => getAIModels({ url: openRouter.modelsListUrl, token }, isFreeModel), []);
+  const models = useMemo(() => getAIModels({
+    url: routers.openRouter.modelsListUrl,
+    token
+  }, isFreeModel), []);
   const [model, setModel] = useState<string>();
 
   return (

@@ -1,6 +1,5 @@
+import { chatCompletion, routers } from "./AIAgent";
 import token from "../token";
-import { openRouter } from "./openRouterAIAgent/routers";
-import { chatCompletion } from "./openRouterAIAgent/agent";
 
 
 export async function makeRequestToAI(model: string, prompt: string, context: Message[]) {
@@ -8,7 +7,7 @@ export async function makeRequestToAI(model: string, prompt: string, context: Me
 
   try {
     const answer = await chatCompletion({
-      url: openRouter.chatCompletionUrl,
+      url: routers.openRouter.chatCompletionUrl,
       messages: [...context, promptMessage],
       model,
       token
