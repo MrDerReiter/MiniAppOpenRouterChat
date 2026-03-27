@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import "../../../style/components/promptPanel.css";
 
 
 type PromptPanelProps = {
@@ -56,13 +55,13 @@ export default function PromptPanel(props: PromptPanelProps) {
         onChange={(event) => setPrompt(event.target.value)} />
       <button
         type="button"
-        disabled={isBlocked}
         className="submit-button"
+        disabled={isBlocked}
         onClick={sendRequest}>Отправить</button>
       <button
         type="button"
-        disabled={isBlocked}
         className="submit-button"
+        disabled={isBlocked}
         onClick={clearContext}>Очистить контекст</button>
     </form>
   );

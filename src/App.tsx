@@ -8,7 +8,9 @@ import Chat from "./components/pages/Chat";
 import token from "./token"
 
 import "../style/bootstrap.min.css";
-import "../style/main.css";
+import "../style/app.css";
+import "../style/panels.css";
+import "../style/buttons.css";
 
 
 export default function App() {

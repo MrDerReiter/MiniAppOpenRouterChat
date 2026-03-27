@@ -1,13 +1,21 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, type CSSProperties } from "react";
 import type { AIModelInfo } from "../../service/AIAgent"
 import Spinner from "../controls/Spinner";
 import ErrorMessage from "../controls/ErrorMessage";
-import "../../../style/modelSelector.css";
 
 
 type ModelSelectorProps = {
   dataSource: Promise<AIModelInfo[]>;
   onModelSelected: (modelID: string) => void;
+}
+
+const list: CSSProperties = {
+  margin: 15,
+  padding: 0,
+  minWidth: "20%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center"
 }
 
 
@@ -27,8 +35,8 @@ export default memo(function (props: ModelSelectorProps) {
   return (
     <>
       <h1>Выберите LLM из списка:</h1>
-      <ul className="models-list" hidden={isLoading}>{
-        !error ?
+      <ul style={list} hidden={isLoading}>
+        {!error ?
           models?.map((model, index) => {
             return (
               <li className="model-button" key={index}
@@ -39,7 +47,7 @@ export default memo(function (props: ModelSelectorProps) {
           <ErrorMessage alertText={error.message}>
             Проверьте соединение с интернетом и/или попробуйте обновить страницу.
           </ErrorMessage>
-      }</ul>
+        }</ul>
       {isLoading && <Spinner />}
     </>
   );

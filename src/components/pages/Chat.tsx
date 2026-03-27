@@ -1,10 +1,18 @@
-import { useState, type MouseEvent } from "react";
+import { useState, type CSSProperties, type MouseEvent } from "react";
 import { makeRequestToAI } from "../../service/helpers";
 import type { Message } from "../../service/AIAgent";
 import Spinner from "../controls/Spinner";
 import PromptPanel from "../controls/PromptPanel";
 import MessagesContainer from "../controls/MessagesContainer";
-import "../../../style/chat.css";
+
+
+const anchor: CSSProperties = {
+  position: "fixed",
+  width: 45,
+  height: 45,
+  fontSize: 30,
+  color: "#aaa"
+}
 
 
 export default function Chat(props: { model: string; }) {
@@ -52,10 +60,9 @@ export default function Chat(props: { model: string; }) {
         onClearContext={dropContext} />
       {isWaitingAnswer && <Spinner />}
       <MessagesContainer {...{ context, error }} />
-      <a id="bottom" className="ref"
-        onClick={navigateToModelSelector}>← Назад к выбору модели</a>
-      <a className="ref page-anchor scroll-top" href="#top">↑</a>
-      <a className="ref page-anchor scroll-bottom" href="#bottom">↓</a>
+      <a id="bottom" onClick={navigateToModelSelector}>← Назад к выбору модели</a>
+      <a style={{ ...anchor, top: 100, right: "0.5rem" }} href="#top">↑</a>
+      <a style={{ ...anchor, bottom: 50, right: "0.5rem" }} href="#bottom">↓</a>
     </>
   );
 }

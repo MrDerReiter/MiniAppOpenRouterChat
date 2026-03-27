@@ -8,7 +8,7 @@ export default function ErrorMessage(props: ErrorMessageProps) {
 
   return (
     <p className="text-box">
-      Что-то пошло не так: <span className="alert-text">{alertText}</span><br />
+      Что-то пошло не так: <span style={{ color: "red" }}>{alertText}</span><br />
       {children}
     </p>
   );
