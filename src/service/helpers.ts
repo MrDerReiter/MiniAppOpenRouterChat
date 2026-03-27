@@ -1,4 +1,5 @@
 import { chatCompletion, routers } from "./AIAgent";
+import type { Message, AIModelInfo } from "./AIAgent";
 import token from "../token";
 
 
@@ -17,7 +18,7 @@ export async function makeRequestToAI(model: string, prompt: string, context: Me
   } catch (error) { return Promise.reject(error); }
 }
 
-export function isFreeModel(model: IAIModel) {
+export function isFreeModel(model: AIModelInfo) {
   return model.pricing.prompt == "0" &&
     model.pricing.completion == "0"
 }

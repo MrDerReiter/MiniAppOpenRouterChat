@@ -1,4 +1,22 @@
-export async function getAIModels(options: AIRequestOptions, predicate?: IModelPredicate) {
+interface ModelPredicate { (model: AIModelInfo): boolean; }
+interface SingleResponse { choices: { text: string }[]; }
+interface ChatResponse { choices: { message: { content: string } }[]; }
+interface AIRequestOptions { url: string; token: string; }
+interface SingleCompletionOptions extends AIRequestOptions { model: string; prompt: string; }
+interface ChatCompletionOptions extends AIRequestOptions { model: string; messages: Message[]; }
+
+export interface Message { role: "user" | "assistant" | "system", content: string }
+export interface AIModelInfo {
+  id: string;
+  name: string;
+  pricing: {
+    prompt: string;
+    completion: string;
+  }
+}
+
+
+export async function getAIModels(options: AIRequestOptions, predicate?: ModelPredicate) {
   const { url, token } = options;
 
   return fetch(url, {
@@ -7,7 +25,7 @@ export async function getAIModels(options: AIRequestOptions, predicate?: IModelP
   }).then(response => {
     if (response.ok) return response.json();
     else throw new Error(`запрос отклонён с кодом ${response.status}`);
-  }).then((body: { data: IAIModel[] }) => {
+  }).then((body: { data: AIModelInfo[] }) => {
     const models = body.data;
     if (predicate) return models.filter(predicate);
     else return models;
@@ -27,7 +45,7 @@ export async function singleCompletion(options: SingleCompletionOptions) {
   }).then(response => {
     if (response.ok) return response.json();
     else throw new Error(`Запрос отклонён с кодом ${response.status}.`);
-  }).then((body: ISingleResponse) => {
+  }).then((body: SingleResponse) => {
     const answer = body?.choices?.[0].text;
     if (answer) return answer;
     else throw new Error("сервер прислал невалидный ответ");
@@ -47,7 +65,7 @@ export async function chatCompletion(options: ChatCompletionOptions) {
   }).then(response => {
     if (response.ok) return response.json();
     else throw new Error(`запрос отклонён с кодом ${response.status}`);
-  }).then((body: IChatResponse) => {
+  }).then((body: ChatResponse) => {
     const answer = body?.choices?.[0].message.content;
     if (answer) return answer;
     else throw new Error("сервер прислал невалидный ответ");

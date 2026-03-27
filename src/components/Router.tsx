@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import type { Props } from "./types";
+import { useEffect, useState, type ReactElement } from "react";
 
 
-export default function Router(props: Props.Router) {
+export default function Router(props: { children: ReactElement[]; }) {
   const { children } = props;
   const [path, setPath] = useState(window.location.pathname);
 

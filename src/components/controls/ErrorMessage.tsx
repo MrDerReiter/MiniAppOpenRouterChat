@@ -1,8 +1,9 @@
-import type { Props } from "../types";
+import type { ReactNode } from "react";
 
 
+export type ErrorMessageProps = { children: ReactNode; alertText: string }
 
-export default function ErrorMessage(props: Props.ErrorMessage) {
+export default function ErrorMessage(props: ErrorMessageProps) {
   const { children, alertText } = props;
 
   return (

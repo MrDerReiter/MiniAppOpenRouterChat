@@ -1,10 +1,14 @@
 import { useRef, useState } from "react";
-import type { Props } from "../types";
 import "../../../style/components/promptPanel.css";
 
 
+type PromptPanelProps = {
+  onWaitingAnswer: (question: string) => Promise<void>;
+  onClearContext: () => void;
+}
 
-export default function PromptPanel(props: Props.PromptPanel) {
+
+export default function PromptPanel(props: PromptPanelProps) {
   function sendRequest() {
     if (!prompt) { denyRequest(); return; }
 
@@ -13,8 +17,7 @@ export default function PromptPanel(props: Props.PromptPanel) {
       .then(() => {
         setPrompt("");
         localStorage.removeItem("lastPrompt");
-      })
-      .catch(() => localStorage.setItem("lastPrompt", prompt))
+      }).catch(() => localStorage.setItem("lastPrompt", prompt))
       .finally(() => setIsBlocked(false));
   }
 
