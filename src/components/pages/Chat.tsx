@@ -16,7 +16,7 @@ const anchor: CSSProperties = {
 
 
 export default function Chat(props: { model: string; }) {
-  function performRequest(prompt: string) {
+  async function performRequest(prompt: string) {
     setIsWaitingAnswer(true);
 
     return makeRequestToAI(model, prompt, context)

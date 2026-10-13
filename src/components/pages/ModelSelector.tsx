@@ -46,8 +46,8 @@ export default memo(function (props: ModelSelectorProps) {
           }) :
           <ErrorMessage alertText={error.message}>
             Проверьте соединение с интернетом и/или попробуйте обновить страницу.
-          </ErrorMessage>
-        }</ul>
+          </ErrorMessage>}
+      </ul>
       {isLoading && <Spinner />}
     </>
   );
