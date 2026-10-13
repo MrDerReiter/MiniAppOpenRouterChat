@@ -1,11 +1,11 @@
 import { memo, useEffect, useState, type CSSProperties } from "react";
-import type { AIModelInfo } from "../../service/AIAgent"
 import Spinner from "../controls/Spinner";
 import ErrorMessage from "../controls/ErrorMessage";
+import type { Model } from "@openrouter/sdk/models";
 
 
 type ModelSelectorProps = {
-  dataSource: Promise<AIModelInfo[]>;
+  dataSource: Promise<Model[]>;
   onModelSelected: (modelID: string) => void;
 }
 
@@ -21,7 +21,7 @@ const list: CSSProperties = {
 
 export default memo(function (props: ModelSelectorProps) {
   const { dataSource, onModelSelected } = props;
-  const [models, setModels] = useState<AIModelInfo[]>();
+  const [models, setModels] = useState<Model[]>();
   const [error, setError] = useState<Error>();
   const [isLoading, setIsLoading] = useState(true);
 

@@ -1,10 +1,14 @@
-import { marked as markupParser } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
-import type { CSSProperties } from "react";
-import type { Message } from "../../service/AIAgent";
 import ErrorMessage from "./ErrorMessage";
+import type { CSSProperties } from "react";
+import type { ChatMessages } from "@openrouter/sdk/models";
 
 
-type MessagesContainerProps = { context: Message[], error?: Error };
+type MessagesContainerProps = {
+  context: ChatMessages[];
+  error?: Error;
+  lastAnswerStreamText?: string;
+};
+
 
 const container: CSSProperties = {
   display: "flex",
@@ -16,26 +20,29 @@ const container: CSSProperties = {
   maxWidth: "90%",
   padding: 15
 };
-
 const question: CSSProperties = {
   background: "linear-gradient(135deg, #121959, #172179)",
-  userSelect: "none"
-}
+  cursor: "default"
+};
 
 
 export default function MessagesContainer(props: MessagesContainerProps) {
-  const { context, error } = props;
+  const { context, error, lastAnswerStreamText } = props;
 
   return (
     <div style={container}>
       {context.map((message, index) => {
         return (
           message.role == "user" ?
-            <p className="text-box" style={question} key={index}>{message.content}</p> :
-            <div className="answer" key={index}
-              dangerouslySetInnerHTML={{ __html: markupParser.parse(message.content) }} />
+            <p className="text-box" style={question} key={index}>{message.content as string}</p> :
+            <div key={index}
+              className="answer"
+              dangerouslySetInnerHTML={{ __html: message.content as string }} />
         );
       })}
+      {lastAnswerStreamText &&
+        <div className="answer"
+          dangerouslySetInnerHTML={{ __html: lastAnswerStreamText }} />}
       {error &&
         <ErrorMessage alertText={error.message}>
           Попробуйте отправить новый запрос, или выберите другую модель.

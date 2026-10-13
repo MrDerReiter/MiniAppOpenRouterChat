@@ -1,11 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
-import { getAIModels, routers } from "./service/AIAgent";
-import { isFreeModel } from "./service/helpers";
+import { listFreeModels } from "./openRouterAgent";
 import Router from "./components/Router";
 import Page from "./components/Page";
 import ModelSelector from "./components/pages/ModelSelector";
 import Chat from "./components/pages/Chat";
-import token from "./token"
 
 import "../style/bootstrap.min.css";
 import "../style/app.css";
@@ -19,12 +17,8 @@ export default function App() {
     window.history.pushState({}, "", "/chat");
     window.dispatchEvent(new PopStateEvent("popstate"));
   }, []);
-
-  const models = useMemo(() => getAIModels({
-    url: routers.openRouter.modelsListUrl,
-    token
-  }, isFreeModel), []);
-  const [model, setModel] = useState<string>();
+  const models = useMemo(() => listFreeModels(), []);
+  const [modelID, setModel] = useState<string>();
 
   return (
     <Router>
@@ -33,7 +27,7 @@ export default function App() {
           dataSource={models}
           onModelSelected={navigateToChat} />
       } />
-      <Page path="/chat" content={<Chat model={model} />} />
+      <Page path="/chat" content={<Chat model={modelID} />} />
     </Router>
   );
 }
